@@ -89,25 +89,31 @@ void RocketLauncher::InitializeFuzzyModule()
 {
   FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
 
-  FzSet& Target_Close = DistToTarget.AddLeftShoulderSet("Target_Close",0,25,150);
+  FzSet& Target_VeryClose = DistToTarget.AddLeftShoulderSet("Target_VeryClose", 0, 15, 25);
+  FzSet& Target_Close = DistToTarget.AddTriangularSet("Target_Close",25,75,150);
   FzSet& Target_Medium = DistToTarget.AddTriangularSet("Target_Medium",25,150,300);
-  FzSet& Target_Far = DistToTarget.AddRightShoulderSet("Target_Far",150,300,1000);
+  FzSet& Target_Far = DistToTarget.AddTriangularSet("Target_Far",150,300,1000);
+  FzSet& Target_VeryFar = DistToTarget.AddRightShoulderSet("Target_VeryFar", 1000,1500, 2000);
+  
 
   FuzzyVariable& Desirability = m_FuzzyModule.CreateFLV("Desirability"); 
-  FzSet& VeryDesirable = Desirability.AddRightShoulderSet("VeryDesirable", 50, 75, 100);
+  FzSet& Wanted = Desirability.AddRightShoulderSet("Wanted", 100, 150, 200);
+  FzSet& VeryDesirable = Desirability.AddTriangularSet("VeryDesirable", 50, 75, 100);
   FzSet& Desirable = Desirability.AddTriangularSet("Desirable", 25, 50, 75);
-  FzSet& Undesirable = Desirability.AddLeftShoulderSet("Undesirable", 0, 25, 50);
+  FzSet& Undesirable = Desirability.AddTriangularSet("Undesirable", 0, 25, 50);
+  FzSet& NotDesirable = Desirability.AddLeftShoulderSet("NotDesirable", 0, 15, 25);
 
   FuzzyVariable& AmmoStatus = m_FuzzyModule.CreateFLV("AmmoStatus");
-  FzSet& Ammo_Loads = AmmoStatus.AddRightShoulderSet("Ammo_Loads", 10, 30, 100);
-  FzSet& Ammo_Okay = AmmoStatus.AddTriangularSet("Ammo_Okay", 0, 10, 30);
-  FzSet& Ammo_Low = AmmoStatus.AddTriangularSet("Ammo_Low", 0, 0, 10);
-
+  FzSet& Ammo_Loads = AmmoStatus.AddRightShoulderSet("Ammo_Loads", 30, 60, 100);
+  FzSet& Ammo_Okay = AmmoStatus.AddTriangularSet("Ammo_Okay", 10, 20, 30);
+  FzSet& Ammo_Low = AmmoStatus.AddTriangularSet("Ammo_Low", 5, 7, 10);
+  FzSet& Ammo_VeryLow = AmmoStatus.AddTriangularSet("Ammo_Low", 0, 3, 5);
+  FzSet& Ammo_Empty = AmmoStatus.AddLeftShoulderSet("Ammo_Empty", 0, 0, 0);
 
   m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads), Undesirable);
   m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay), Undesirable);
   m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low), Undesirable);
-
+	//faire le reste
   m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads), VeryDesirable);
   m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay), VeryDesirable);
   m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low), Desirable);
