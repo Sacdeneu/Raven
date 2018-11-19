@@ -34,6 +34,8 @@ private:
   //instance of each weapon)
   WeaponMap        m_WeaponMap;
 
+  FuzzyModule   m_FuzzyModule;
+
   //a pointer to the weapon the bot is currently holding
   Raven_Weapon*    m_pCurrentWeapon;
 
@@ -108,6 +110,8 @@ public:
 
   void          RenderCurrentWeapon()const;
   void          RenderDesirabilities()const;
+
+  void			InitializeFuzzyModule();
 };
 
 #endif
