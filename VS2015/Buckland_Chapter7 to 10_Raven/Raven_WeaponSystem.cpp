@@ -333,6 +333,13 @@ void Raven_WeaponSystem::RenderDesirabilities()const
 
 void Raven_WeaponSystem::InitializeFuzzyModule()
 {
+	FuzzyVariable& Precision = m_FuzzyModule.CreateFLV("Desirability");
+	FzSet& FullPrecise = Precision.AddRightShoulderSet("FullPrecise", 100, 150, 200);
+	FzSet& VeryPrecise = Precision.AddTriangularSet("VeryPrecise", 50, 75, 100);
+	FzSet& Precise = Precision.AddTriangularSet("Precise", 25, 50, 75);
+	FzSet& Unprecise = Precision.AddTriangularSet("Unprecise", 0, 25, 50);
+	FzSet& NotPrecise = Precision.AddLeftShoulderSet("NotPrecise", 0, 15, 25);
+
 	FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
 
 	FzSet& Target_VeryClose = DistToTarget.AddLeftShoulderSet("Target_VeryClose", 0, 15, 25);
@@ -342,17 +349,21 @@ void Raven_WeaponSystem::InitializeFuzzyModule()
 	FzSet& Target_VeryFar = DistToTarget.AddRightShoulderSet("Target_VeryFar", 1000, 1500, 2000);
 
 
-	FuzzyVariable& Desirability = m_FuzzyModule.CreateFLV("Desirability");
-	FzSet& Wanted = Desirability.AddRightShoulderSet("Wanted", 100, 150, 200);
-	FzSet& VeryDesirable = Desirability.AddTriangularSet("VeryDesirable", 50, 75, 100);
-	FzSet& Desirable = Desirability.AddTriangularSet("Desirable", 25, 50, 75);
-	FzSet& Undesirable = Desirability.AddTriangularSet("Undesirable", 0, 25, 50);
-	FzSet& NotDesirable = Desirability.AddLeftShoulderSet("NotDesirable", 0, 15, 25);
+	FuzzyVariable& Velocity = m_FuzzyModule.CreateFLV("Velocity");
+	FzSet& HighSpeed = Velocity.AddRightShoulderSet("HighSpeed", 100, 150, 200);
+	FzSet& Fast = Velocity.AddTriangularSet("Fast", 50, 75, 100);
+	FzSet& Normal = Velocity.AddTriangularSet("Normal", 25, 50, 75);
+	FzSet& Slow = Velocity.AddTriangularSet("Slow", 0, 25, 50);
+	FzSet& Idle = Velocity.AddLeftShoulderSet("Idle", 0, 15, 25);
 
-	FuzzyVariable& AmmoStatus = m_FuzzyModule.CreateFLV("AmmoStatus");
-	FzSet& Ammo_Loads = AmmoStatus.AddRightShoulderSet("Ammo_Loads", 30, 60, 100);
-	FzSet& Ammo_Okay = AmmoStatus.AddTriangularSet("Ammo_Okay", 10, 20, 30);
-	FzSet& Ammo_Low = AmmoStatus.AddTriangularSet("Ammo_Low", 5, 7, 10);
-	FzSet& Ammo_VeryLow = AmmoStatus.AddTriangularSet("Ammo_Low", 0, 3, 5);
-	FzSet& Ammo_Empty = AmmoStatus.AddLeftShoulderSet("Ammo_Empty", 0, 0, 0);
+	FuzzyVariable& TimeStamp = m_FuzzyModule.CreateFLV("TimeStamp");
+	FzSet& Long = TimeStamp.AddRightShoulderSet("Long", 30, 60, 100);
+	FzSet& Semi_Long = TimeStamp.AddTriangularSet("Semi_Long", 10, 20, 30);
+	FzSet& Average = TimeStamp.AddTriangularSet("Average", 5, 7, 10);
+	FzSet& Short = TimeStamp.AddTriangularSet("Short", 0, 3, 5);
+	FzSet& None = TimeStamp.AddLeftShoulderSet("None", 0, 0, 0);
+
+	m_FuzzyModule.AddRule(FzAND(Target_VeryFar, HighSpeed), NotPrecise);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Normal), Precise);
+	//AJOUTER DES REGLES
 }
