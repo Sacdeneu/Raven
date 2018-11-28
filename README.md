@@ -1,9 +1,9 @@
 # Raven
 Projet d'IA
 
-Question A - FAITE
-Question B - FAITE
-Question C - FAITE
-Question D - NON FAITE
-Question E - NON FAITE
+Question A - FAITE<br />
+Question B - FAITE<br />
+Question C - FAITE<br />
+Question D - NON FAITE<br />
+Question E - NON FAITE<br />
 Question F - NON FAITE
